@@ -29,5 +29,9 @@ class BaseNekretnineSpider(scrapy.Spider):
             else:
                 log.msg('Rejecting link: %s' % link, level=log.INFO)
 
+        pagination = response.xpath(u'//a[text() = "Sljede\u0107a\xa0"]/@href').extract_first()
+        if pagination:
+            yield scrapy.Request(pagination, callback=self.oglasi_links)
+
     def parse_oglas(self, response):
         pass
