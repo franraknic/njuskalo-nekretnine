@@ -52,7 +52,7 @@ class BaseNekretnineSpider(scrapy.Spider):
         item['grad'] = response.xpath(u'//table/tbody/tr[th[text() = "Grad/Općina:"]]/td/text()').extract()
         item['naselje'] = response.xpath(u'//table/tbody/tr[th[text() = "Naselje:"]]/td/text()').extract()
         item['m2'] = response.xpath(u'//table/tbody/tr[th[text() = "Stambena površina:"]]/td/text()').extract()
-        item['kat'] = response.xpath(u'//table/tbody/tr[th[text() = "Kat:"]]/td/text()').extract()
+        # item['kat'] = response.xpath(u'//table/tbody/tr[th[text() = "Kat:"]]/td/text()').extract()
 
         return item
 
