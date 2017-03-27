@@ -8,6 +8,7 @@ from scraper.items import BaseOglasItem
 class BaseNekretnineSpider(scrapy.Spider):
 
     name = ''
+    db_name = ''
     tip = ''
     allowed_domains = ['njuskalo.hr']
     url_base = ''
@@ -40,8 +41,10 @@ class BaseNekretnineSpider(scrapy.Spider):
         do_isteka = response.xpath(u'//li[span[text() = "Do isteka je još:"]]/span').extract() # FIXME: broken xpath
         prikazan = response.xpath(u'//li[span[text() = "Oglas prikazan:"]]/span[@class = "value"]').extract() # FIXME: broken xpath
 
-        # table parsing
         item['link'] = response.url
+        item['tip'] = self.db_name
+
+        # table parsing
         item['cijena'] = response.xpath(u'//strong[@class = "price price--hrk"]/text()').extract_first()
         item['sifra'] = response.xpath(u'//li[span[text() = "Šifra oglasa:"]]/span/b/text()').extract()
         item['objavljen'] = response.xpath(u'//li[span[text() = "Objavljen:"]]/time/@datetime').extract_first()
