@@ -14,7 +14,7 @@ class BaseOglasItem(scrapy.Item):
     cijena = scrapy.Field()
     sifra = scrapy.Field()
     objavljen = scrapy.Field()
-    scraped = datetime.datetime.now()
+    scraped = scrapy.Field()
     zupanija = scrapy.Field()
     grad = scrapy.Field()
     naselje = scrapy.Field()
