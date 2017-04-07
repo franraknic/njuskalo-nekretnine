@@ -17,7 +17,7 @@ class BaseNekretnineSpider(scrapy.Spider):
 
     def parse(self, response):
 
-        zup = response.xpath(u'//div[@class = "list-topcats"]//li/a/@href').extract()
+        zup = response.xpath(u'//div[@class = "CategoryListing-topCategories"]//li/a/@href').extract()
 
         for z in zup:
             yield scrapy.Request(self.url_base + z, callback=self.oglasi_links)
