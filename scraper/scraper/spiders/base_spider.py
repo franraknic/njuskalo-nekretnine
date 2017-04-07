@@ -3,6 +3,7 @@
 import scrapy
 from scrapy import log
 from scraper.items import BaseOglasItem
+import datetime
 
 
 class BaseNekretnineSpider(scrapy.Spider):
@@ -16,7 +17,7 @@ class BaseNekretnineSpider(scrapy.Spider):
 
     def parse(self, response):
 
-        zup = response.xpath(u'//div[@class = "list-topcats"]//li/a/@href').extract()
+        zup = response.xpath(u'//div[@class = "CategoryListing-topCategories"]//li/a/@href').extract()
 
         for z in zup:
             yield scrapy.Request(self.url_base + z, callback=self.oglasi_links)
@@ -43,15 +44,17 @@ class BaseNekretnineSpider(scrapy.Spider):
 
         item['link'] = response.url
         item['tip'] = self.db_name
+        # item['scraped'] = datetime.datetime.now()
+        item['scraped'] = u'Vrijeme SADA'
 
         # table parsing
         item['cijena'] = response.xpath(u'//strong[@class = "price price--hrk"]/text()').extract_first()
-        item['sifra'] = response.xpath(u'//li[span[text() = "Šifra oglasa:"]]/span/b/text()').extract()
+        item['sifra'] = response.xpath(u'//li[span[text() = "Šifra oglasa:"]]/span/b/text()').extract_first()
         item['objavljen'] = response.xpath(u'//li[span[text() = "Objavljen:"]]/time/@datetime').extract_first()
-        item['zupanija'] = response.xpath(u'//table/tbody/tr[th[text() = "Županija:"]]/td/text()').extract()
-        item['grad'] = response.xpath(u'//table/tbody/tr[th[text() = "Grad/Općina:"]]/td/text()').extract()
-        item['naselje'] = response.xpath(u'//table/tbody/tr[th[text() = "Naselje:"]]/td/text()').extract()
-        item['m2'] = response.xpath(u'//table/tbody/tr[th[text() = "Stambena površina:"]]/td/text()').extract()
+        item['zupanija'] = response.xpath(u'//table/tbody/tr[th[text() = "Županija:"]]/td/text()').extract_first()
+        item['grad'] = response.xpath(u'//table/tbody/tr[th[text() = "Grad/Općina:"]]/td/text()').extract_first()
+        item['naselje'] = response.xpath(u'//table/tbody/tr[th[text() = "Naselje:"]]/td/text()').extract_first()
+        item['m2'] = response.xpath(u'//table/tbody/tr[th[text() = "Stambena površina:"]]/td/text()').extract_first()
         # item['kat'] = response.xpath(u'//table/tbody/tr[th[text() = "Kat:"]]/td/text()').extract()
 
         return item
