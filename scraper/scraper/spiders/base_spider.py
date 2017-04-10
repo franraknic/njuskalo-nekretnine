@@ -43,9 +43,8 @@ class BaseNekretnineSpider(scrapy.Spider):
         prikazan = response.xpath(u'//li[span[text() = "Oglas prikazan:"]]/span[@class = "value"]').extract() # FIXME: broken xpath
 
         item['link'] = response.url
-        item['tip'] = self.db_name
-        # item['scraped'] = datetime.datetime.now()
-        item['scraped'] = u'Vrijeme SADA'
+        item['tip'] = 'rent_stan'
+        item['scraped'] = datetime.datetime.now()
 
         # table parsing
         item['cijena'] = response.xpath(u'//strong[@class = "price price--hrk"]/text()').extract_first()

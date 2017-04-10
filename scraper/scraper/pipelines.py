@@ -7,47 +7,39 @@
 # TODO: Add pipeline for data conversion, from string to numeric etc.
 
 
-import sqlite3
+
 from scrapy import log
-from OglasModel import Oglas
+from OglasModel import Oglas, Grad, Naselje, Zupanija
 
 
 class ScraperPipeline(object):
 
-    def process_item(self, item):
+    def process_item(self, item, spider):
         return item
 
 
-class SQLPersist(object):
+class NormalizeData(object):
+    """Convert scraped strings to integers or the required format before persisting to DB"""
 
-    def __init__(self):
+    def process_item(self, item, spider):
+        item['cijena'] = item['cijena'].strip().replace('.','')
+        item['cijena'] = int(item['cijena'])
 
-        self.db_path = 'D:\\FINAL_QUESTION.db'
-        self.connection = sqlite3.connect(self.db_path)
-        self.cursor = self.connection.cursor()
-        self.cursor.execute("CREATE TABLE IF NOT EXISTS `oglasi` ( `id` INTEGER PRIMARY KEY AUTOINCREMENT, `cijena` TEXT, `link` TEXT, `objavljen` TEXT, `scraped` TEXT, `tip` TEXT, `zupanija` TEXT, `grad` TEXT, `naselje` TEXT, `m2` TEXT ); ")
-
-    def process_item(self, item):
-
-        self.cursor.execute('SELECT count(oglasi.link) FROM oglasi WHERE oglasi.link=?', (item['link'],))
-        result = self.cursor.fetchone()
-
-        if result[0] != 0:
-            log.msg('Item %s in database!' % item['link'], level=log.WARNING)
-        else:
-            oglas = [(None, item['cijena'], item['link'], item['scraped'], item['objavljen'], item['tip'], item['zupanija'], item['grad'], item['naselje'], item['m2'])]
-            self.cursor.executemany('INSERT INTO oglasi VALUES (?,?,?,?,?,?,?,?,?,?)', oglas)
-            self.connection.commit()
-
+        item['m2'] = item['m2'].replace(',','.')
+        item['m2'] = float(item['m2'])
         return item
 
 
 class ORMPersist(object):
+    """Persists scraped data to an SQLite databse, run setup_databse.py or DatabaseObject.create(Model) from console"""
 
-    def process_item(self, item):
+    def process_item(self, item, spider):
 
-        oglas = Oglas.create(link=item['link'], cijena=item['cijena'], zup_id=1, grad_id=1, naselje_id=1)
+        new_zup, c1 = Zupanija.get_or_create(ime=item['zupanija'])
+        new_grad, c2 = Grad.get_or_create(ime=item['grad'], zup_id=new_zup.id)
+        new_nas, c3 = Naselje.get_or_create(ime=item['naselje'], grad_id=new_grad.id)
+
+        oglas = Oglas(cijena=item['cijena'], m2=item['m2'], link=item['link'],tip=item['tip'], scraped=item['scraped'], zup=new_zup.id, grad=new_grad.id, naselje=new_nas.id)
         oglas.save()
-        log.msg("Item saved to database!", level=log.WARNING)
 
         return item

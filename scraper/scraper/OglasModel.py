@@ -3,7 +3,7 @@ from peewee import *
 
 class BaseModel(Model):
     class Meta:
-        database = SqliteDatabase('test.db', **{})
+        database = SqliteDatabase('nekretnine.db')
 
 
 class Zupanija(BaseModel):
@@ -30,8 +30,11 @@ class Naselje(BaseModel):
 
 
 class Oglas(BaseModel):
-    cijena = TextField()
+    cijena = IntegerField()
+    m2 = FloatField()
     link = TextField()
+    tip = TextField()
+    scraped = TextField()
     zup = ForeignKeyField(Zupanija)
     grad = ForeignKeyField(Grad)
     naselje = ForeignKeyField(Naselje)

@@ -65,7 +65,8 @@ TELNETCONSOLE_ENABLED = False
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'scraper.pipelines.ScraperPipeline': 300,
+    'scraper.pipelines.NormalizeData': 299,
+    'scraper.pipelines.ORMPersist': 300,
     #'scraper.pipelines.SQLPersist': 300
 }
 
