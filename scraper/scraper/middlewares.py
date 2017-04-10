@@ -6,6 +6,21 @@
 # http://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+from scrapy.exceptions import IgnoreRequest
+from scrapy import log
+
+
+class CustomDownloaderMiddleware(object):
+    # This is to be used for processing requests before
+    # sending to the downloader, see:
+    # https://doc.scrapy.org/en/latest/topics/downloader-middleware.html#scrapy.downloadermiddlewares.DownloaderMiddleware.process_request
+
+    def process_request(self, request, spider):
+        log.msg("Processing request: " + request.url, level=log.WARNING)
+        if False:
+            raise IgnoreRequest()
+        else:
+            return None
 
 
 class ScraperSpiderMiddleware(object):
