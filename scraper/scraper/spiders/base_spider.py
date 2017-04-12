@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# TODO: Parse the whole Oglas table for a more detailed database
 import scrapy
 from scrapy import log
 from scraper.items import BaseOglasItem

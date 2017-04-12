@@ -1,3 +1,6 @@
+# TODO: Add Bool visible field to the Oglas model, to be used by pipeline - checking if Oglas is active or expired
+# TODO: Don't forget to add fields that will be parsed in the future
+
 from peewee import *
 
 

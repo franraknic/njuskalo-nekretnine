@@ -4,7 +4,8 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
-# TODO: Add pipeline for data conversion, from string to numeric etc.
+# TODO: Add method for checking duplicates in database
+# TODO: Add method for checking if Oglas is still active (not sold or expired), Oglas.link can be used for this
 
 
 
