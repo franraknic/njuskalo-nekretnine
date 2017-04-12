@@ -8,7 +8,7 @@ class IznajmljivanjeStan(BaseNekretnineSpider):
 
     name = 'rent_stan'
     tip = '/iznajmljivanje-stanova'
-    db_name = 'stan_izn'
+    db_name = 'stan_rent'
     url_base = 'http://www.njuskalo.hr'
     start_urls = [url_base + tip]
 
@@ -17,6 +17,6 @@ class ProdajaStan(BaseNekretnineSpider):
 
     name = 'prodaja_stan'
     tip = '/prodaja-stanova'
-    db_name = 'stan_prod'
+    db_name = 'stan_prodaja'
     url_base = 'http://www.njuskalo.hr'
     start_urls = [url_base + tip]
