@@ -35,12 +35,14 @@ class Naselje(BaseModel):
 class Oglas(BaseModel):
     cijena = IntegerField()
     m2 = FloatField()
-    link = TextField()
+    link = TextField(unique=True)
     tip = TextField()
     scraped = TextField()
     zup = ForeignKeyField(Zupanija)
     grad = ForeignKeyField(Grad)
     naselje = ForeignKeyField(Naselje)
+    active = BooleanField(default=True)
+    last_active = TextField()
 
     class Meta:
         pass
