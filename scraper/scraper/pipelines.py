@@ -11,6 +11,7 @@
 
 from scrapy import log
 from OglasModel import Oglas, Grad, Naselje, Zupanija
+import datetime
 
 
 class ScraperPipeline(object):
@@ -34,13 +35,22 @@ class NormalizeData(object):
 class ORMPersist(object):
     """Persists scraped data to an SQLite databse, run setup_databse.py or DatabaseObject.create(Model) from console"""
 
-    def process_item(self, item, spider):
+    def persist_oglas(self, item):
 
         new_zup, c1 = Zupanija.get_or_create(ime=item['zupanija'])
         new_grad, c2 = Grad.get_or_create(ime=item['grad'], zup_id=new_zup.id)
         new_nas, c3 = Naselje.get_or_create(ime=item['naselje'], grad_id=new_grad.id)
 
-        oglas = Oglas(cijena=item['cijena'], m2=item['m2'], link=item['link'],tip=item['tip'], scraped=item['scraped'], zup=new_zup.id, grad=new_grad.id, naselje=new_nas.id)
-        oglas.save()
+        ogl, saved = Oglas.get_or_create(link=item['link'], defaults={ 'cijena':item['cijena'], 'm2':item['m2'], 'tip':item['tip'], 'scraped':item['scraped'],
+                      'zup':new_zup.id, 'grad':new_grad.id, 'naselje':new_nas.id, 'last_active': item['scraped']})
+
+        if not saved:
+            q = Oglas.update(active=True, last_active=datetime.datetime.now()).where(Oglas.link == item['link'])
+            q.execute()
+            log.msg('Exists in database - set as active : %s' % ogl.link, level=log.INFO)
+
+    def process_item(self, item, spider):
+
+        self.persist_oglas(item)
 
         return item
