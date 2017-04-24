@@ -10,17 +10,22 @@ Easily modified using the OglasModel.py and then execute the setup_database.py s
 ![Database schema](baza.png)
 
 ## Running the scraper
-There are two spiders, depending on the type you want to scrape. Both types get stored into the same database with different oglas.tip fields. Run with:
+There are four spiders, depending on the type you want to scrape. Both types get stored into the same database with different oglas.tip fields. Run with:
 ```
 scrapy crawl rent_stan
 scrapy crawl prodaja_stan
+scrapy crawl rent_kuca
+scrapy crawl prodaja_kuca
 ```
-You can cron these commands but it would be better to make a [script](https://doc.scrapy.org/en/latest/topics/practices.html)
+Running the spiders like this will scrape the contents but if you want to scrape to check for active listings (maby cron the script) use the scraper_script:
+```
+python scraper_script.py
+```
 
 ## In progress
 This project is still in progress, the current todos are:
-* adding spiders for houses (rent/sale)
-* duplicate checker for database (the link is unique for each listing so it can be used for this purpose)
+* ~~adding spiders for houses (rent/sale)~~
+* ~~duplicate checker for database (the link is unique for each listing so it can be used for this purpose)~~
 * scrape&persist authors (users) of the listings
 * parse more information from the listings
 
