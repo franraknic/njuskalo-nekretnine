@@ -3,21 +3,25 @@
 
 from peewee import *
 
+myDb = MySQLDatabase('njuskalo', host='127.0.0.1', user='root', passwd='')
+
 
 class BaseModel(Model):
     class Meta:
-        database = SqliteDatabase('nekretnine.db')
+        # database = SqliteDatabase('nekretnine.db')
+        database = myDb
+
 
 
 class Zupanija(BaseModel):
-    ime = TextField()
+    ime = CharField()
 
     class Meta:
         pass
 
 
 class Grad(BaseModel):
-    ime = TextField()
+    ime = CharField()
     zup = ForeignKeyField(Zupanija)
 
     class Meta:
@@ -25,7 +29,7 @@ class Grad(BaseModel):
 
 
 class Naselje(BaseModel):
-    ime = TextField()
+    ime = CharField()
     grad = ForeignKeyField(Grad)
 
     class Meta:
@@ -35,14 +39,14 @@ class Naselje(BaseModel):
 class Oglas(BaseModel):
     cijena = IntegerField()
     m2 = FloatField()
-    link = TextField(unique=True)
-    tip = TextField()
-    scraped = TextField()
+    link = CharField(unique=True)
+    tip = CharField()
+    scraped = CharField()
     zup = ForeignKeyField(Zupanija)
     grad = ForeignKeyField(Grad)
     naselje = ForeignKeyField(Naselje)
     active = BooleanField(default=True)
-    last_active = TextField()
+    last_active = CharField()
 
     class Meta:
         pass
