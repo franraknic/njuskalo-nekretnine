@@ -22,13 +22,5 @@ Running the spiders like this will scrape the contents but if you want to scrape
 python scraper_script.py
 ```
 
-## In progress
-This project is still in progress, the current todos are:
-* ~~adding spiders for houses (rent/sale)~~
-* ~~duplicate checker for database (the link is unique for each listing so it can be used for this purpose)~~
-* scrape&persist authors (users) of the listings
-* parse more information from the listings
-
-
 ## Warning!
 Whatever you scrape, scrape responsibly by obeying robots.txt and throttle your requests! If you publish the information, make links back to the source!
