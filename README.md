@@ -1,3 +1,7 @@
+# **THIS SCRAPER DOES NOT WORK** 
+The site njuškalo.hr has deployed anti-scraping systems and this scraped is outdated.
+
+
 # njuskalo-nekretnine
 Collecting  realestate listings from [njuškalo](http://www.njuskalo.hr/), most popular Croatian listing website
 
